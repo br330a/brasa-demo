@@ -1,5 +1,4 @@
-import { addOns } from "../data/menu.js";
-import { formatMoney, getProduct, totalCents, unitPriceCents } from "./cart.js";
+import { formatMoney, getLineAdjustments, getProduct, totalCents, unitPriceCents } from "./cart.js";
 
 export function validateCheckout(cart, form) {
   if (!Array.isArray(cart) || cart.length === 0) return "Seu carrinho está vazio.";
@@ -45,14 +44,9 @@ export function buildOrderMessage(cart, form) {
     const product = getProduct(line.productId);
     if (!product) return;
     lines.push(`${index + 1}. ${line.quantity}x ${product.name} — ${formatMoney(unitPriceCents(line) * line.quantity)}`);
-    if (line.addonIds.length) {
-      const names = line.addonIds.map(id => addOns.find(addon => addon.id === id)?.name).filter(Boolean);
-      if (names.length) lines.push(`   + ${names.join(", ")}`);
-    }
-    if (line.removedIngredientIds.length) {
-      const names = line.removedIngredientIds.map(id => product.ingredients.find(ingredient => ingredient.id === id)?.name).filter(Boolean);
-      if (names.length) lines.push(`   Sem: ${names.join(", ")}`);
-    }
+    const { extras, removals } = getLineAdjustments(line);
+    if (extras.length) lines.push(`   + ${extras.join(", ")}`);
+    if (removals.length) lines.push(`   Sem: ${removals.join(", ")}`);
   });
 
   lines.push("", `*Subtotal dos itens:* ${formatMoney(totalCents(cart))}`);

@@ -1,6 +1,5 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import { addOns } from "../data/menu.js";
-import { formatMoney, getProduct, totalCents, unitPriceCents } from "../utils/cart.js";
+import { formatMoney, getLineAdjustments, getProduct, totalCents, unitPriceCents } from "../utils/cart.js";
 import { BagIcon, CloseIcon } from "./ShopIcons.jsx";
 
 const CartDialog = forwardRef(function CartDialog({ cart, increment, decrement, removeLine, onEdit, onCheckout }, ref) {
@@ -29,8 +28,7 @@ const CartDialog = forwardRef(function CartDialog({ cart, increment, decrement, 
         : cart.map((line) => {
           const product = getProduct(line.productId);
           if (!product) return null;
-          const extras = line.addonIds.map((id) => addOns.find((addOn) => addOn.id === id)?.name).filter(Boolean);
-          const removals = line.removedIngredientIds.map((id) => product.ingredients.find((ingredient) => ingredient.id === id)?.name).filter(Boolean);
+          const { extras, removals } = getLineAdjustments(line);
           return <article className="cart-item" key={line.key}>
             <img src={product.image} alt="" width="112" height="112" loading="lazy" />
             <div className="cart-item-main">

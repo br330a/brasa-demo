@@ -11,6 +11,20 @@ export function getProduct(id) {
   return products.find((product) => product.id === id);
 }
 
+
+/** Devolve os nomes visíveis das personalizações de um item do carrinho. */
+export function getLineAdjustments(line) {
+  const product = getProduct(line.productId);
+  if (!product) return { extras: [], removals: [] };
+  const extras = line.addonIds
+    .map((id) => addOns.find((addon) => addon.id === id)?.name)
+    .filter(Boolean);
+  const removals = line.removedIngredientIds
+    .map((id) => product.ingredients.find((ingredient) => ingredient.id === id)?.name)
+    .filter(Boolean);
+  return { extras, removals };
+}
+
 export function makeLine({ productId, quantity = 1, addonIds = [], removedIngredientIds = [] }) {
   const product = getProduct(productId);
   if (!product || !quantityWithin(quantity)) return null;

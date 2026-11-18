@@ -44,7 +44,7 @@
 .checkout-manual textarea { background:#fff; }
 .checkout-bottom { flex:none; display:grid; gap:10px; padding:18px 27px max(18px,env(safe-area-inset-bottom)); border-top:1px solid var(--rule); background:var(--cream); }
 .checkout-back { justify-self:start; padding:5px 0; border:0; background:transparent; color:var(--muted); font-size:12px; font-weight:800; }
-.checkout-back:hover { color:var(--terra); }
+.checkout-back:hover { color:var(--terra-ink); }
 .checkout-send { width:100%; }
 .checkout-bottom p { margin:0; color:var(--muted); text-align:center; font-size:10px; line-height:1.5; }
 @media(max-width:760px) {
@@ -59,3 +59,9 @@
   .checkout-row { grid-template-columns:1fr; }
   .checkout-street-row { grid-template-columns:minmax(0,2fr) minmax(0,1fr); }
 }
+
+/* Descrição completa dos itens na revisão, sem esconder personalizações. */
+.checkout-summary-description { display: grid; gap: 4px; min-width: 0; }
+.checkout-summary-product-name { color: var(--charcoal); font-weight: 700; }
+.checkout-summary-description small { display: block; color: var(--muted); font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+.checkout-summary-product > strong { flex-shrink: 0; white-space: nowrap; align-self: start; }

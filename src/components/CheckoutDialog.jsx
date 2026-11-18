@@ -1,6 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { business } from "../data/business.js";
-import { formatMoney, getProduct, itemCount, totalCents, unitPriceCents } from "../utils/cart.js";
+import { formatMoney, getLineAdjustments, getProduct, itemCount, totalCents, unitPriceCents } from "../utils/cart.js";
 import { buildOrderMessage, validateCheckout } from "../utils/checkout.js";
 import { CloseIcon } from "./ShopIcons.jsx";
 
@@ -148,8 +148,14 @@ const CheckoutDialog = forwardRef(function CheckoutDialog({ cart, onBackCart }, 
             <div className="checkout-summary-items">
               {cart.map(line => {
                 const product = getProduct(line.productId);
-                return product && <div className="checkout-summary-line" key={line.key}>
-                  <span>{line.quantity}× {product.name}{line.addonIds.length ? " · com adicionais" : ""}</span>
+                if (!product) return null;
+                const { extras, removals } = getLineAdjustments(line);
+                return <div className="checkout-summary-line checkout-summary-product" key={line.key}>
+                  <div className="checkout-summary-description">
+                    <span className="checkout-summary-product-name">{line.quantity}× {product.name}</span>
+                    {extras.length > 0 && <small>+ {extras.join(", ")}</small>}
+                    {removals.length > 0 && <small>Sem: {removals.join(", ")}</small>}
+                  </div>
                   <strong>{formatMoney(unitPriceCents(line) * line.quantity)}</strong>
                 </div>;
               })}

@@ -90,7 +90,8 @@ export const products = [
     id: "fritas-brasa", category: "acompanhamentos", name: "Fritas BRASA",
     description: "Nossa porção generosa com cheddar cremoso e bacon crocante.",
     price: 28.9, image: "/images/fritas-brasa.webp", imageAlt: "Porção de fritas com cheddar e bacon",
-    highlight: "Para compartilhar", addOnIds: ["cheddar-extra", "molho-extra"], ingredients: [],
+    highlight: "Para compartilhar", addOnIds: ["cheddar-extra", "bacon-extra", "molho-extra"],
+    ingredients: [{ id: "cheddar", name: "Cheddar" }, { id: "bacon", name: "Bacon" }],
   },
   {
     id: "onion-rings", category: "acompanhamentos", name: "Onion Rings",
