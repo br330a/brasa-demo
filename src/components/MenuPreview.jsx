@@ -7,6 +7,14 @@ export default function MenuPreview({ onSelectProduct }) {
   const [activeCategory, setActiveCategory] = useState("todos");
   const [query, setQuery] = useState("");
   const visibleProducts = searchProducts(products, activeCategory, query);
+  const countFor = (id) => id === "todos" ? products.length : products.filter((p) => p.category === id).length;
+  const groups = categories
+    .filter((category) => category.id !== "todos")
+    .map((category) => ({
+      ...category,
+      items: visibleProducts.filter((product) => product.category === category.id),
+    }))
+    .filter((group) => group.items.length > 0);
 
   return (
     <section className="menu-section" id="cardapio" aria-labelledby="menu-title">
@@ -16,7 +24,7 @@ export default function MenuPreview({ onSelectProduct }) {
             <p className="kicker"><span className="kicker-line" aria-hidden="true" /> NOSSO CARDÁPIO</p>
             <h2 id="menu-title">BOM DE OLHAR.<br /><span>MELHOR DE PROVAR.</span></h2>
           </div>
-          <p className="menu-intro">Os favoritos da casa, preparados para quem leva hambúrguer a sério.</p>
+          <p className="menu-intro">Hambúrgueres artesanais, acompanhamentos, bebidas e sobremesas para uma experiência completa.</p>
         </div>
 
         <div className="menu-controls">
@@ -29,7 +37,8 @@ export default function MenuPreview({ onSelectProduct }) {
                 aria-pressed={activeCategory === category.id}
                 onClick={() => setActiveCategory(category.id)}
               >
-                {category.label}
+                <span>{category.label}</span>
+                <span className="category-count" aria-hidden="true">{countFor(category.id)}</span>
               </button>
             ))}
           </div>
@@ -53,35 +62,44 @@ export default function MenuPreview({ onSelectProduct }) {
           {visibleProducts.length} {visibleProducts.length === 1 ? "produto encontrado" : "produtos encontrados"}
         </p>
 
-        {visibleProducts.length ? (
-          <div className="products-grid">
-            {visibleProducts.map((product) => (
-              <article className="product-card" key={product.id}>
-                <button
-                  className="product-card-trigger"
-                  type="button"
-                  onClick={() => onSelectProduct(product)}
-                  aria-label={`Personalizar ${product.name}, a partir de ${formatMoney(Math.round(product.price * 100))}`}
-                >
-                  <div className="product-image-wrap">
-                    <img src={product.image} alt="" width="768" height="512" loading="lazy" decoding="async" />
-                    {product.highlight && <span className="product-highlight">{product.highlight}</span>}
-                  </div>
-                  <div className="product-detail">
-                    <h3>{product.name}</h3>
-                    <p>{product.description}</p>
-                    <div className="product-card-bottom">
-                      <strong>{formatMoney(Math.round(product.price * 100))}</strong>
-                      <span className="product-plus" aria-hidden="true">+</span>
+        {groups.length ? groups.map((group) => (
+          <section className="menu-category-section" key={group.id} aria-labelledby={`menu-group-${group.id}`}>
+            <div className="menu-category-heading">
+              <div>
+                <h3 id={`menu-group-${group.id}`}>{group.label}</h3>
+                <p>{group.description}</p>
+              </div>
+              <span>{group.items.length} {group.items.length === 1 ? "opção" : "opções"}</span>
+            </div>
+            <div className="products-grid">
+              {group.items.map((product) => (
+                <article className="product-card" key={product.id}>
+                  <button
+                    className="product-card-trigger"
+                    type="button"
+                    onClick={() => onSelectProduct(product)}
+                    aria-label={`Ver ${product.name}, ${formatMoney(Math.round(product.price * 100))}`}
+                  >
+                    <div className="product-image-wrap">
+                      <img src={product.image} alt="" width="768" height="512" loading="lazy" decoding="async" />
+                      {product.highlight && <span className="product-highlight">{product.highlight}</span>}
                     </div>
-                  </div>
-                </button>
-              </article>
-            ))}
-          </div>
-        ) : (
+                    <div className="product-detail">
+                      <h4>{product.name}</h4>
+                      <p>{product.description}</p>
+                      <div className="product-card-bottom">
+                        <strong>{formatMoney(Math.round(product.price * 100))}</strong>
+                        <span className="product-plus" aria-hidden="true">+</span>
+                      </div>
+                    </div>
+                  </button>
+                </article>
+              ))}
+            </div>
+          </section>
+        )) : (
           <div className="menu-empty" role="status">
-            <h3>Nenhum hambúrguer por aqui.</h3>
+            <h3>Nenhum produto encontrado.</h3>
             <p>Tente outra busca ou veja todos os itens do cardápio.</p>
             <button
               type="button"

@@ -26,6 +26,8 @@ const ProductDialog = forwardRef(function ProductDialog({ onAdd }, ref) {
     setter(values.includes(id) ? values.filter((value) => value !== id) : [...values, id]);
   }
 
+  const availableExtras = product ? addOns.filter((extra) => product.addOnIds.includes(extra.id)) : [];
+  const hasRemovals = Boolean(product?.ingredients?.length);
   const draft = product && makeLine({ productId: product.id, quantity, addonIds, removedIngredientIds });
   const unit = draft ? unitPriceCents(draft) : 0;
 
@@ -44,23 +46,23 @@ const ProductDialog = forwardRef(function ProductDialog({ onAdd }, ref) {
         </div>
         <div className="product-options">
           <div className="product-option-heading">
-            <p className="shop-eyebrow">PREPARADO DO SEU JEITO</p>
+            <p className="shop-eyebrow">{availableExtras.length || hasRemovals ? "PREPARADO DO SEU JEITO" : "UMA BOA ESCOLHA"}</p>
             <h2 id="product-dialog-title">{product.name}</h2>
             <p>{product.description}</p>
             <strong>{formatMoney(Math.round(product.price * 100))}</strong>
           </div>
-          <section className="product-option-section" aria-labelledby="addons-heading">
-            <div className="option-heading"><h3 id="addons-heading">Adicione algo especial</h3><span>Opcional</span></div>
+          {availableExtras.length > 0 && <section className="product-option-section" aria-labelledby="addons-heading">
+            <div className="option-heading"><h3 id="addons-heading">Deixe ainda melhor</h3><span>Opcional</span></div>
             <div className="options-list">
-              {addOns.map((addon) => <label className="shop-checkbox" key={addon.id}>
+              {availableExtras.map((addon) => <label className="shop-checkbox" key={addon.id}>
                 <input type="checkbox" checked={addonIds.includes(addon.id)} onChange={() => toggle(addon.id, addonIds, setAddonIds)} />
                 <span className="shop-checkbox-mark" aria-hidden="true" />
                 <span className="shop-checkbox-name">{addon.name}</span>
                 <strong>+ {formatMoney(Math.round(addon.price * 100))}</strong>
               </label>)}
             </div>
-          </section>
-          <section className="product-option-section" aria-labelledby="removals-heading">
+          </section>}
+          {hasRemovals && <section className="product-option-section" aria-labelledby="removals-heading">
             <div className="option-heading"><h3 id="removals-heading">Retirar ingredientes</h3><span>Opcional</span></div>
             <div className="remove-ingredients">
               {product.ingredients.map((ingredient) => <button type="button" key={ingredient.id}
@@ -70,7 +72,8 @@ const ProductDialog = forwardRef(function ProductDialog({ onAdd }, ref) {
                 {removedIngredientIds.includes(ingredient.id) ? "✓ Sem " : "− "}{ingredient.name}
               </button>)}
             </div>
-          </section>
+          </section>}
+          {!availableExtras.length && !hasRemovals && <p className="product-simple-note">É só escolher a quantidade e adicionar ao carrinho.</p>}
         </div>
       </div>}
       {draft && <div className="shop-dialog-footer product-dialog-footer">

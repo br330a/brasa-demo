@@ -14,7 +14,7 @@ export function getProduct(id) {
 export function makeLine({ productId, quantity = 1, addonIds = [], removedIngredientIds = [] }) {
   const product = getProduct(productId);
   if (!product || !quantityWithin(quantity)) return null;
-  const validAddOns = new Set(addOns.map((addon) => addon.id));
+  const validAddOns = new Set((product.addOnIds ?? []).filter((id) => addOns.some((addon) => addon.id === id)));
   const validIngredients = new Set(product.ingredients.map((ingredient) => ingredient.id));
   if (!Array.isArray(addonIds) || !Array.isArray(removedIngredientIds)) return null;
   const additions = uniqueSorted(addonIds.filter((id) => typeof id === "string" && validAddOns.has(id)));
