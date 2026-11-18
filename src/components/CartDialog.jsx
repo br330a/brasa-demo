@@ -3,15 +3,20 @@ import { addOns } from "../data/menu.js";
 import { formatMoney, getProduct, totalCents, unitPriceCents } from "../utils/cart.js";
 import { BagIcon, CloseIcon } from "./ShopIcons.jsx";
 
-const CartDialog = forwardRef(function CartDialog({ cart, increment, decrement, removeLine, onEdit }, ref) {
+const CartDialog = forwardRef(function CartDialog({ cart, increment, decrement, removeLine, onEdit, onCheckout }, ref) {
   const dialogRef = useRef(null);
-  useImperativeHandle(ref, () => ({ open: () => {
-    if (!dialogRef.current?.open) dialogRef.current?.showModal();
-  } }));
+  useImperativeHandle(ref, () => ({
+    open: () => { if (!dialogRef.current?.open) dialogRef.current?.showModal(); },
+  }));
 
   function edit(line) {
     dialogRef.current?.close();
     onEdit(line);
+  }
+
+  function checkout() {
+    dialogRef.current?.close();
+    onCheckout();
   }
 
   return <dialog ref={dialogRef} className="shop-dialog cart-dialog" aria-labelledby="cart-title">
@@ -40,7 +45,11 @@ const CartDialog = forwardRef(function CartDialog({ cart, increment, decrement, 
           </article>;
         })}
     </div>
-    {cart.length > 0 && <div className="cart-footer"><div className="cart-subtotal"><span>Subtotal</span><strong>{formatMoney(totalCents(cart))}</strong></div><p>Valores demonstrativos. A confirmação e o envio pelo WhatsApp serão implementados na próxima etapa.</p><button type="button" className="shop-primary cart-continue" onClick={() => dialogRef.current?.close()}>Continuar escolhendo <span aria-hidden="true">↗</span></button></div>}
+    {cart.length > 0 && <div className="cart-footer">
+      <div className="cart-subtotal"><span>Subtotal</span><strong>{formatMoney(totalCents(cart))}</strong></div>
+      <p>O pedido será preparado para WhatsApp. Taxas e disponibilidade são confirmadas pelo restaurante.</p>
+      <button type="button" className="shop-primary cart-continue" onClick={checkout}>Finalizar pedido <span aria-hidden="true">↗</span></button>
+    </div>}
   </dialog>;
 });
 export default CartDialog;

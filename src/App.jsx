@@ -7,12 +7,14 @@ import Footer from "./components/Footer.jsx";
 import ProductDialog from "./components/ProductDialog.jsx";
 import CartDialog from "./components/CartDialog.jsx";
 import CartDock from "./components/CartDock.jsx";
+import CheckoutDialog from "./components/CheckoutDialog.jsx";
 import { getProduct, itemCount, totalCents } from "./utils/cart.js";
 import { useCart } from "./hooks/useCart.js";
 
 export default function App() {
   const productRef = useRef(null);
   const cartRef = useRef(null);
+  const checkoutRef = useRef(null);
   const { cart, addLine, increment, decrement, removeLine } = useCart();
   const [announcement, setAnnouncement] = useState("");
   const count = itemCount(cart);
@@ -33,7 +35,16 @@ export default function App() {
       <main id="conteudo"><Hero /><MenuPreview onSelectProduct={(product) => productRef.current?.open(product)} /><Story /></main>
       <Footer />
       <ProductDialog ref={productRef} onAdd={addToCart} />
-      <CartDialog ref={cartRef} cart={cart} increment={increment} decrement={decrement} removeLine={removeLine} onEdit={editItem} />
+      <CartDialog
+        ref={cartRef}
+        cart={cart}
+        increment={increment}
+        decrement={decrement}
+        removeLine={removeLine}
+        onEdit={editItem}
+        onCheckout={() => checkoutRef.current?.open()}
+      />
+      <CheckoutDialog ref={checkoutRef} cart={cart} onBackCart={() => cartRef.current?.open()} />
       <CartDock count={count} total={subtotal} onOpenCart={() => cartRef.current?.open()} />
       <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">{announcement}</div>
     </>
