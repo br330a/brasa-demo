@@ -81,7 +81,7 @@ export default function MenuPreview({ onSelectProduct }) {
                     aria-label={`Ver ${product.name}, ${formatMoney(Math.round(product.price * 100))}`}
                   >
                     <div className="product-image-wrap">
-                      <img src={product.image} alt="" width="768" height="512" loading="lazy" decoding="async" />
+                      <img src={product.image.replace(/\.webp$/, "-card.webp")} alt="" width="800" height="533" loading="lazy" decoding="async" />
                       {product.highlight && <span className="product-highlight">{product.highlight}</span>}
                     </div>
                     <div className="product-detail">
