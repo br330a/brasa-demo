@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./styles/global.css";
 import "./styles/home.css";
+import "./styles/scroll-showcase.css";
 import "./styles/shop.css";
 import "./styles/checkout.css";
 

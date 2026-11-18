@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import Navbar from "./components/Navbar.jsx";
 import Hero from "./components/Hero.jsx";
+import ScrollShowcase from "./components/ScrollShowcase.jsx";
 import MenuPreview from "./components/MenuPreview.jsx";
 import Story from "./components/Story.jsx";
 import Footer from "./components/Footer.jsx";
@@ -32,7 +33,7 @@ export default function App() {
   return (
     <>
       <Navbar cartCount={count} onOpenCart={() => cartRef.current?.open()} />
-      <main id="conteudo"><Hero /><MenuPreview onSelectProduct={(product) => productRef.current?.open(product)} /><Story /></main>
+      <main id="conteudo"><Hero /><ScrollShowcase /><MenuPreview onSelectProduct={(product) => productRef.current?.open(product)} /><Story /></main>
       <Footer />
       <ProductDialog ref={productRef} onAdd={addToCart} />
       <CartDialog
