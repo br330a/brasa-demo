@@ -1,5 +1,5 @@
 /* BRASA. — identidade e páginas de apresentação */
-:root { --cream:#faf7f2; --charcoal:#22241f; --terra:#ce5a38; --olive:#647052; --muted:#6f7169; --rule:#e7e2d9; }
+:root { --cream:#faf7f2; --charcoal:#22241f; --terra:#ce5a38; --terra-ink:#a63f25; --olive:#647052; --muted:#6f7169; --rule:#e7e2d9; }
 .site-header { position: sticky; top: 0; z-index: 30; border-bottom: 1px solid var(--rule); background: rgb(250 247 242 / 94%); backdrop-filter: blur(14px); }
 .header-inner { min-height: 82px; display:flex; justify-content:space-between; align-items:center; gap:22px; }
 .wordmark { display:inline-block; font-family:"Archivo Black", Impact, sans-serif; font-size:29px; line-height:1; letter-spacing:-2px; white-space:nowrap; }
@@ -46,9 +46,8 @@
 .product-image-wrap { position:relative; aspect-ratio:3 / 2; overflow:hidden; background:#eee8df; }
 .product-image-wrap img { width:100%; height:100%; object-fit:cover; transition:transform .35s ease; }
 .product-card:hover .product-image-wrap img { transform:scale(1.04); }
-.product-highlight { position:absolute; top:12px; left:12px; padding:7px 10px; border-radius:5px; background:var(--terra); color:#fff; font-size:10px; font-weight:800; }
+.product-highlight { position:absolute; top:12px; left:12px; padding:7px 10px; border-radius:5px; background:var(--terra-ink); color:#fff; font-size:10px; font-weight:800; }
 .product-detail { padding:20px; }
-.product-detail h3 { margin:0 0 9px; font-size:19px; line-height:1.25; letter-spacing:-.5px; }
 .product-detail p { min-height:69px; margin:0 0 19px; color:var(--muted); font-size:12px; line-height:1.65; }
 .product-detail strong { color:var(--charcoal); font-size:17px; }
 .demo-disclaimer { margin:24px 0 0; font-size:12px; color:var(--muted); }
@@ -118,7 +117,6 @@
   .product-image-wrap { aspect-ratio:auto; height:100%; min-height:157px; }
   .product-highlight { font-size:8px; left:8px; top:8px; padding:5px 6px; }
   .product-detail { display:flex; flex-direction:column; padding:14px; }
-  .product-detail h3 { font-size:17px; margin-bottom:5px; }
   .product-detail p { min-height:0; margin:0 0 9px; font-size:11px; line-height:1.5; }
   .product-detail strong { margin-top:auto; font-size:15px; }
   .story-title-wrap h2 { font-size:clamp(38px,10vw,55px); }
@@ -128,7 +126,6 @@
 @media (max-width:360px) {
   .product-card { grid-template-columns:103px minmax(0,1fr); }
   .product-detail { padding:11px; }
-  .product-detail h3 { font-size:15px; }
 }
 @media (prefers-reduced-motion:reduce) {
   .button, .product-image-wrap img { transition:none; }

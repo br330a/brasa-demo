@@ -7,7 +7,7 @@
 .product-plus { display:grid; place-items:center; width:33px; height:33px; flex:none; border-radius:50%; background:#f1ebe2; color:var(--charcoal); font-size:22px; font-weight:500; transition:background .2s,color .2s; }
 .nav-cart-button { display:flex; position:relative; align-items:center; justify-content:center; width:45px; height:45px; padding:0; border:1px solid var(--rule); border-radius:50%; background:transparent; color:var(--charcoal); }
 .nav-cart-button:hover { border-color:var(--terra); }
-.nav-cart-count { display:grid; place-items:center; position:absolute; top:-6px; right:-7px; min-width:20px; height:20px; padding:0 4px; border-radius:12px; background:var(--terra); color:#fff; font-size:10px; font-weight:800; }
+.nav-cart-count { display:grid; place-items:center; position:absolute; top:-6px; right:-7px; min-width:20px; height:20px; padding:0 4px; border-radius:12px; background:var(--terra-ink); color:#fff; font-size:10px; font-weight:800; }
 
 /* Janela modal nativa — trava rolagem por trás e limita o scroll à janela */
 body:has(.shop-dialog[open]) { overflow:hidden; }
@@ -16,7 +16,7 @@ body:has(.shop-dialog[open]) { overflow:hidden; }
 .shop-dialog-body { overflow-y:auto; overscroll-behavior:contain; }
 .shop-close { display:grid; place-items:center; width:42px; height:42px; flex:none; border:1px solid #ddd7ce; border-radius:50%; background:#fff; color:var(--charcoal); }
 .shop-close:hover { border-color:var(--terra); }
-.shop-eyebrow { margin:0 0 12px; color:var(--terra); font-weight:800; letter-spacing:1.7px; font-size:10px; }
+.shop-eyebrow { margin:0 0 12px; color:var(--terra-ink); font-weight:800; letter-spacing:1.7px; font-size:10px; }
 .shop-primary { display:inline-flex; align-items:center; justify-content:space-between; gap:18px; min-height:52px; padding:15px 20px; border:0; border-radius:8px; background:var(--charcoal); color:#fff; font-size:13px; font-weight:800; text-align:center; }
 .shop-primary:hover { background:#3e453a; }
 .shop-primary:disabled { background:#999; cursor:not-allowed; }

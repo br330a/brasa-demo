@@ -114,7 +114,6 @@ html:has(.shop-dialog[open]), body:has(.shop-dialog[open]) {
   .menu-search { min-width: 0; width: 100%; }
   .menu-result-count { margin-bottom: 14px; }
   .product-card-trigger { min-width: 0; }
-  .product-card .product-detail h3 { line-height: 1.25; }
   .product-card .product-detail p { font-size: 12px; }
   .product-card .product-plus { width: 36px; height: 36px; }
   /* Padding protege os controles e o teclado virtual; sem scroll lateral. */
@@ -128,7 +127,6 @@ html:has(.shop-dialog[open]), body:has(.shop-dialog[open]) {
   .menu-controls .category-filters { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
   .menu-controls .category-button { padding-inline: 10px; }
   .product-card .product-detail { padding: 12px; }
-  .product-card .product-detail h3 { font-size: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
