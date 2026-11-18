@@ -1,30 +1,97 @@
 import { useState } from "react";
 import { categories, products } from "../data/menu.js";
 import { formatMoney } from "../utils/cart.js";
+import { searchProducts } from "../utils/search.js";
 
 export default function MenuPreview({ onSelectProduct }) {
   const [activeCategory, setActiveCategory] = useState("todos");
-  const visibleProducts = activeCategory === "todos"
-    ? products : products.filter((product) => product.category === activeCategory);
+  const [query, setQuery] = useState("");
+  const visibleProducts = searchProducts(products, activeCategory, query);
 
   return (
     <section className="menu-section" id="cardapio" aria-labelledby="menu-title">
       <div className="container">
         <div className="menu-heading">
-          <div><p className="kicker"><span className="kicker-line" aria-hidden="true" /> NOSSO CARDÁPIO</p><h2 id="menu-title">BOM DE OLHAR.<br /><span>MELHOR DE PROVAR.</span></h2></div>
+          <div>
+            <p className="kicker"><span className="kicker-line" aria-hidden="true" /> NOSSO CARDÁPIO</p>
+            <h2 id="menu-title">BOM DE OLHAR.<br /><span>MELHOR DE PROVAR.</span></h2>
+          </div>
           <p className="menu-intro">Os favoritos da casa, preparados para quem leva hambúrguer a sério.</p>
         </div>
-        <div className="category-filters" role="group" aria-label="Filtrar cardápio por categoria">
-          {categories.map((category) => <button key={category.id} type="button" className={`category-button ${activeCategory === category.id ? "is-active" : ""}`} aria-pressed={activeCategory === category.id} onClick={() => setActiveCategory(category.id)}>{category.label}</button>)}
+
+        <div className="menu-controls">
+          <div className="category-filters" role="group" aria-label="Filtrar cardápio por categoria">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                type="button"
+                className={`category-button ${activeCategory === category.id ? "is-active" : ""}`}
+                aria-pressed={activeCategory === category.id}
+                onClick={() => setActiveCategory(category.id)}
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
+          <label className="menu-search">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.8" />
+              <path d="m16 16 5 5" strokeLinecap="round" />
+            </svg>
+            <span className="sr-only">Buscar produto no cardápio</span>
+            <input
+              type="search"
+              placeholder="Buscar no cardápio"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              enterKeyHint="search"
+            />
+          </label>
         </div>
-        <div className="products-grid">
-          {visibleProducts.map((product) => <article className="product-card" key={product.id}>
-            <button className="product-card-trigger" type="button" onClick={() => onSelectProduct(product)} aria-label={`Personalizar ${product.name}, a partir de ${formatMoney(Math.round(product.price * 100))}`}>
-              <div className="product-image-wrap"><img src={product.image} alt="" width="768" height="512" loading="lazy" decoding="async" />{product.highlight && <span className="product-highlight">{product.highlight}</span>}</div>
-              <div className="product-detail"><h3>{product.name}</h3><p>{product.description}</p><div className="product-card-bottom"><strong>{formatMoney(Math.round(product.price * 100))}</strong><span className="product-plus" aria-hidden="true">+</span></div></div>
+
+        <p className="menu-result-count" role="status" aria-live="polite">
+          {visibleProducts.length} {visibleProducts.length === 1 ? "produto encontrado" : "produtos encontrados"}
+        </p>
+
+        {visibleProducts.length ? (
+          <div className="products-grid">
+            {visibleProducts.map((product) => (
+              <article className="product-card" key={product.id}>
+                <button
+                  className="product-card-trigger"
+                  type="button"
+                  onClick={() => onSelectProduct(product)}
+                  aria-label={`Personalizar ${product.name}, a partir de ${formatMoney(Math.round(product.price * 100))}`}
+                >
+                  <div className="product-image-wrap">
+                    <img src={product.image} alt="" width="768" height="512" loading="lazy" decoding="async" />
+                    {product.highlight && <span className="product-highlight">{product.highlight}</span>}
+                  </div>
+                  <div className="product-detail">
+                    <h3>{product.name}</h3>
+                    <p>{product.description}</p>
+                    <div className="product-card-bottom">
+                      <strong>{formatMoney(Math.round(product.price * 100))}</strong>
+                      <span className="product-plus" aria-hidden="true">+</span>
+                    </div>
+                  </div>
+                </button>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="menu-empty" role="status">
+            <h3>Nenhum hambúrguer por aqui.</h3>
+            <p>Tente outra busca ou veja todos os itens do cardápio.</p>
+            <button
+              type="button"
+              className="menu-reset"
+              onClick={() => { setQuery(""); setActiveCategory("todos"); }}
+            >
+              Ver todos os produtos <span aria-hidden="true">→</span>
             </button>
-          </article>)}
-        </div>
+          </div>
+        )}
         <p className="demo-disclaimer">Projeto demonstrativo: produtos e preços fictícios. Nenhum pedido real é processado.</p>
       </div>
     </section>

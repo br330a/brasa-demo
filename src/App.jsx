@@ -32,6 +32,7 @@ export default function App() {
 
   return (
     <>
+      <a className="skip-to-content" href="#conteudo">Pular para o conteúdo</a>
       <Navbar cartCount={count} onOpenCart={() => cartRef.current?.open()} />
       <main id="conteudo"><Hero /><ScrollShowcase /><MenuPreview onSelectProduct={(product) => productRef.current?.open(product)} /><Story /></main>
       <Footer />
